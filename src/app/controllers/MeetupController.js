@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { Op } from 'sequelize';
 import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns';
-import Meetup from '../models/Subscription';
+import Meetup from '../models/Meetup';
 import User from '../models/User';
 
 // gerenciamento e criação de meetups

@@ -51,7 +51,7 @@ class SubscriptionController {
     if (meetup.user_id === req.userId) {
       return res
         .status(400)
-        .json({ error: 'You cannot subscribe to you own meetups' });
+        .json({ error: "Can't subscribe to you own meetups" });
     }
 
     if (meetup.past) {
@@ -84,10 +84,10 @@ class SubscriptionController {
       meetup_id: meetup.id,
     });
 
-    //    await Queue.add(SubscriptionMail.key, {
-    //      meetup,
-    //      user,
-    //    });
+    // await Queue.add(SubscriptionMail.key, {
+    //   meetup,
+    //   user,
+    // });
 
     return res.json(subscription);
   }

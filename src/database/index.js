@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+// import mongoose from 'mongoose';
 
 import databaseConfig from '../config/database';
 
