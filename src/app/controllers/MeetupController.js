@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
+import File from '../models/File';
 
 // gerenciamento e criação de meetups
 // o usuario podera cadastrar meertups na plataforma com titulo, descricao, localizacao, data e hora e imagem.
@@ -29,6 +30,24 @@ class MeetupController {
     });
 
     return res.json(meetups);
+  }
+
+  async show(req, res) {
+    const meetup = await Meetup.findByPk(req.params.id, {
+      include: [
+        {
+          model: File,
+          as: 'File',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+      attributes: ['id', 'title', 'description', 'location', 'date', 'user_id'],
+    });
+
+    if (meetup.user_id !== req.userId) {
+      return res.status(401).json({ error: 'Not authorized.' });
+    }
+    return res.json(meetup);
   }
 
   async store(req, res) {
