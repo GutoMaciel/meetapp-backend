@@ -15,9 +15,11 @@
 import { Op } from 'sequelize';
 import User from '../models/User';
 import Meetup from '../models/Meetup';
+import File from '../models/File';
 import Subscription from '../models/Subscription';
 import Queue from '../../lib/Queue';
 import SubscriptionMail from '../jobs/SubscriptionMail';
+import OrganizingController from './OrganizingController';
 
 class SubscriptionController {
   async index(req, res) {
@@ -34,6 +36,26 @@ class SubscriptionController {
             },
           },
           required: true,
+          attributes: [
+            'id',
+            'title',
+            'description',
+            'location',
+            'date',
+            'past',
+          ],
+          include: [
+            {
+              model: User,
+              as: 'User',
+              attributes: ['id', 'name'],
+            },
+            {
+              model: File,
+              as: 'File',
+              attributes: ['id', 'path', 'url'],
+            },
+          ],
         },
       ],
       order: [[Meetup, 'date']],
