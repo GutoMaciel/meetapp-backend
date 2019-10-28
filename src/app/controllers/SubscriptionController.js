@@ -113,6 +113,28 @@ class SubscriptionController {
 
     return res.json(subscription);
   }
+
+  async delete(req, res) {
+    const subscription = await Subscription.findByPk(req.params.id);
+
+    // if (subscription.user_id !== req.userId) {
+    //   return res
+    //     .status(401)
+    //     .json({ error: 'Only the User can delete this Subscription.' });
+    // }
+
+    const meetup = await Meetup.findByPk(subscription.meetup_id);
+
+    if (meetup.past) {
+      return res
+        .status(401)
+        .json({ error: "You can't delete past meetups Subscriptions" });
+    }
+
+    await subscription.destroy();
+
+    return res.json();
+  }
 }
 
 export default new SubscriptionController();
