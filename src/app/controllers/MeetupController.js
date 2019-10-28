@@ -14,6 +14,8 @@ class MeetupController {
     const where = {};
     const page = req.query.page || 1;
 
+    const searchDate = parseISO(req.query.date);
+
     if (req.query.date) {
       const searchDate = parseISO(req.query.date);
 
@@ -34,7 +36,13 @@ class MeetupController {
           attributes: ['id', 'path', 'url'],
         },
       ],
-      limit: 10,
+      order: [['date']],
+      where: {
+        date: {
+          [Op.between]: [startOfDay(searchDate), endOfDay(searchDate)],
+        },
+      },
+      limit: 20,
       offset: 10 * page - 10,
     });
 
